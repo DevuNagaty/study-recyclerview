@@ -13,8 +13,8 @@ import kotlinx.android.synthetic.main.itemlist_row.view.*
  * specified [InteractionListener].
  */
 class ItemListRecyclerViewAdapter(
-    private val mValues: List<ItemListViewModel.Item>,
-    private val mListener: InteractionListener?
+    private val items: List<ItemListViewModel.Item>,
+    private val interactionlistener: InteractionListener?
 ) : RecyclerView.Adapter<ItemListRecyclerViewAdapter.ViewHolder>() {
 
     interface InteractionListener {
@@ -26,7 +26,7 @@ class ItemListRecyclerViewAdapter(
     init {
         mOnClickListener = View.OnClickListener { v ->
             val item = v.tag as ItemListViewModel.Item
-            mListener?.onClick(item)
+            interactionlistener?.onClick(item)
         }
     }
 
@@ -37,24 +37,20 @@ class ItemListRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = mValues[position]
-        holder.mIdView.text = item.id.toString()
-        holder.mContentView.text = item.title
+        val item = items[position]
+        holder.numberView.text = item.id.toString()
+        holder.nameView.text = item.title
 
-        with(holder.mView) {
+        with(holder.view) {
             tag = item
             setOnClickListener(mOnClickListener)
         }
     }
 
-    override fun getItemCount(): Int = mValues.size
+    override fun getItemCount(): Int = items.size
 
-    inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mIdView: TextView = mView.item_number
-        val mContentView: TextView = mView.content
-
-        override fun toString(): String {
-            return super.toString() + " '" + mContentView.text + "'"
-        }
+    inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+        val numberView: TextView = view.item_number
+        val nameView: TextView = view.item_name
     }
 }

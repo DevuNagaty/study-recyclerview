@@ -1,8 +1,10 @@
 package com.gmail.devu.study.recyclerview
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 
 class ItemListViewModel : ViewModel() {
+    val TAG = this::class.java.simpleName
 
     data class Item(val id: Int, val title: String, val details: String) {
         override fun toString(): String = title
@@ -37,4 +39,15 @@ class ItemListViewModel : ViewModel() {
     fun selectItem(item: Item) {
         selected = items.indexOf(item)
     }
- }
+
+    fun moveItem(oldIndex : Int, newIndex : Int) {
+        Log.d(TAG, "moveItem(%d, %d): id=%d".format(oldIndex, newIndex, items[oldIndex].id))
+        val item = items.removeAt(oldIndex)
+        items.add(newIndex, item)
+    }
+
+    fun removeItemAt(index : Int) {
+        Log.d(TAG, "removeItemAt(%d): id=%s".format(index, items[index].id))
+        items.removeAt(index)
+    }
+}
